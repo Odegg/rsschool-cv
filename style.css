@@ -8,11 +8,28 @@ header {
     font-family: Arial, Helvetica, sans-serif;
     width: 80%;
 }
+.header-a-box {
+    height: 50px;
+    border-bottom: solid 1px grey;
+}
 .header-a {
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 600;   
+    font-size: xx-large;
 }
+.header-h-box {
+    height: 50px;
+    border-bottom: solid 1px grey;
+}
+
 main {
     font-family: Arial, Helvetica, sans-serif;
     width: 80%;
+}
+.main-list {
+    padding: 0;
+}
+li {
+    margin-top: 7px;
+    margin-bottom: 7px;
 }
