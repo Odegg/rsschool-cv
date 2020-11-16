@@ -1,7 +1,7 @@
 require('./options.css');
 const template = require('./options.html');
 
-const generalProps = {
+generalProps = {
     puzzleClear: {
         x: 0,
         y: 0
@@ -14,4 +14,9 @@ const generalProps = {
     pause: false,
     stop: false,
 
+}
+
+module.exports = {
+    template: template,
+    generalProps: generalProps
 }

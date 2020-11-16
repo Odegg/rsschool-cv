@@ -9,7 +9,7 @@ exports.field = () => {
     let ImageObj = new Image();
 
     const gemField = document.getElementById('gemField');
-    // let matrix = undefined;
+    let puzzleMatrix;
     const size = 16;
     gemField.style.gridTemplateColumns = `repeat(4, 1fr)`;
     gemField.style.gridTemplateRows = `repeat(4, 1fr)`;
@@ -33,6 +33,8 @@ exports.field = () => {
 
             context.drawImage(ImageObj, axisX, axisY, sourceHeigth, sourceWidth);
 
+
+
             let dataUrl = canv.toDataURL('image/png');
             puzzleDiv.style.backgroundImage = `url(${dataUrl})`;
 
@@ -47,21 +49,16 @@ exports.field = () => {
             }
         }
 
-        // generalProps.puzzleClear = {
-        //     x: randInt(0, 4 - 1),
-        //     y: randInt(0, 4 - 1)
-        // }
+        generalProps.puzzleClear = {
+            x: randInt(0, 4 - 1),
+            y: randInt(0, 4 - 1)
+        }
 
-        // generalProps.timer = 0;
-        // generalProps.matrix = createMatrix();
-        // generalProps.moves = [];
-        // generalProps.solution = createMatrix();
-        // generalProps.win = false;
-        // // Randomizer()
+        generalProps.matrix = createMatrix();
+        console.log(generalProps.matrix);
+        document.getElementById('gemField').style.gridTemplateAreas = fromMatrix(generalProps.matrix);
         document.getElementById(generalProps.matrix[generalProps.puzzleClear.y][generalProps.puzzleClear.x]).classList.add('clear-puzzle');
-        // generalProps.pause = false,
-        //     generalProps.stop = false,
-        //     reven
+        moveble(generalProps.puzzleClear);
     }
     ImageObj.src = 'quadre.png';
 }
@@ -74,9 +71,9 @@ function createMatrix() {
     matrix = [];
     let lineArray;
     let id = 1;
-    for (let index = 0; index < 16; index++) {
+    for (let index = 0; index < 4; index++) {
         lineArray = [];
-        for (let i = 0; i < 16; i++) {
+        for (let i = 0; i < 4; i++) {
             lineArray.push(`P${id}`);
             id++;
         }
@@ -84,4 +81,67 @@ function createMatrix() {
     }
     console.log(matrix);
     return matrix;
+}
+
+function fromMatrix(matrix) {
+    let templateAreas = [];
+    matrix.forEach(element => {
+        templateAreas.push(`"${element.join(' ')}"`)
+    });
+    return templateAreas.join(' ');
+}
+
+function moveble(puzzleClear) {
+    let moveArr = [];
+    console.log(puzzleClear);
+
+    if (puzzleClear.x - 1 >= 0) {
+        moveArr.push({
+            x: puzzleClear.x - 1,
+            y: puzzleClear.y
+        });
+    }
+    if (puzzleClear.x + 1 <= 3) {
+        moveArr.push({
+            x: puzzleClear.x + 1,
+            y: puzzleClear.y
+        });
+    }
+    if (puzzleClear.y - 1 >= 0) {
+        moveArr.push({
+            x: puzzleClear.x,
+            y: puzzleClear.y - 1
+        });
+    }
+    if (puzzleClear.y + 1 <= 3) {
+        moveArr.push({
+            x: puzzleClear.x,
+            y: puzzleClear.y + 1
+        });
+    }
+    addMoveListener(moveArr);
+}
+
+function addMoveListener(array) {
+    Array.from(document.getElementsByClassName('puzzle-element')).forEach(item => {
+        item.classList.remove('movable-element');
+    });
+    document.getElementById('gemField').outerHTML = document.getElementById('gemField').outerHTML;
+    array.forEach(element => {
+        const el = document.getElementById(generalProps.matrix[element.y][element.x]);
+        document.getElementById(el.id).classList.add('movable-element');
+        el.addEventListener('click', () => {
+            move(element);
+            document.getElementById('gemField').style.gridTemplateAreas = fromMatrix(generalProps.matrix);
+        })
+    });
+
+}
+
+function move(element) {
+    let enigma = generalProps.matrix[element.y][element.x];
+    generalProps.matrix[element.y][element.x] = generalProps.matrix[generalProps.puzzleClear.y][generalProps.puzzleClear.x];
+    generalProps.matrix[generalProps.puzzleClear.y][generalProps.puzzleClear.x] = enigma;
+    generalProps.puzzleClear = element;
+    moveble(generalProps.puzzleClear);
 }
