@@ -1,0 +1,42 @@
+body {
+    background-color: indigo;
+}
+
+.puzzle-element {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% auto;
+    z-index: 1;
+}
+
+#gemField {
+    width: 70vw;
+    height: 70vw;
+    display: grid;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    max-width: 500px;
+    max-height: 500px;
+    overflow: hidden;
+    box-shadow: 0px 0px 30px pink;
+}
+
+.clear-puzzle {
+    opacity: 0;
+}
+
+#game-section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.movable-element {
+    cursor: pointer;
+}
+
+.movable-element:hover {
+    opacity: 0.5;
+}
